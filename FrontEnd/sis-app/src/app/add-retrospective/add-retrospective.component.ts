@@ -24,22 +24,28 @@ constructor(
 
   retrospectiveForm = new FormGroup({
     name: new FormControl('', Validators.required),
-    summary: new FormControl('', Validators.required),
-    date: new FormControl(''),
+    summary: new FormControl(''),
+    date: new FormControl(new Date().toDateString(),  Validators.required),
     participants: new FormControl('', Validators.required),
     feedbacks: new FormControl('')
   });  
 
   ngOnInit(): void {
-    this.retrospectiveForm.controls.name.setValue('');
-    this.retrospectiveForm.controls.summary.setValue('');
-    this.retrospectiveForm.controls.date.setValue(new Date().toDateString());
-    this.retrospectiveForm.controls.participants.setValue('');
-    this.retrospectiveForm.controls.feedbacks.setValue('');
+    // this.retrospectiveForm.controls.name.setValue('');
+    // this.retrospectiveForm.controls.summary.setValue('');
+    // this.retrospectiveForm.controls.date.setValue(new Date().toDateString());
+    // this.retrospectiveForm.controls.participants.setValue('');
+    // this.retrospectiveForm.controls.feedbacks.setValue('');
 
   }
 
-  addRetrospective(){    
+  addRetrospective(){ 
+    
+    this.submitted = true;
+
+    if(this.retrospectiveForm?.invalid) 
+    return;
+
     console.warn(this.retrospectiveForm.value);
     var participantsArray  = this.retrospectiveForm.controls.participants.value?.split(',');
     
@@ -62,7 +68,7 @@ constructor(
           console.error('Observer got an error: ' + err);
           this.success = false;
           this.failure = true;
-          this.errorMessage = err;
+          this.errorMessage = err.error.message;
         },
         complete: () => console.log('Observer got a complete notification'),         
       });

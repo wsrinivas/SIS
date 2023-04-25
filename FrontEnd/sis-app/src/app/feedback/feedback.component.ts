@@ -55,13 +55,15 @@ export class FeedbackComponent implements OnInit {
     this.retrospectiveService.getRetrospectiveById(id)
       .subscribe((retrospective) => {
         this.retrospective = retrospective;
+        console.log(retrospective);
       });
   }
 
   addFeedback() { 
     debugger;
     this.submitted = true;
-   // if (!this.feedbackForm.valid) return;
+   if (!this.feedbackForm.valid) return;
+   
     const id = String(this.route.snapshot.paramMap.get('id'));
     
     this.retrospectiveService.addFeedback(id, { 
@@ -71,13 +73,15 @@ export class FeedbackComponent implements OnInit {
       .subscribe({
         next: () => {
           this.success = true;
-          this.feedbackForm.disable();
+          this.feedbackForm.disable();          
+          this.getItem();
         },
         error: error => {
           this.success = false;
           this.errorMessage = error.error;
         }
       });
+      this.feedbackForm.reset();
   }
 
 

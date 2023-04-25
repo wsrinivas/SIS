@@ -5,44 +5,37 @@
         <form [formGroup]="retrospectiveForm" (ngSubmit)="addRetrospective()">
             <div class="mb-3">
                 <label  class="form-label" for="name">Name:</label>
-                <input class="form-control"  type="text" formControlName="name" 
-                     [ngClass]="{ 'is-invalid': submitted && retrospectiveForm.controls.name.errors }"/>
+                <input class="form-control"  type="text" formControlName="name"
+                ngModel [ngClass]="{ 'is-invalid': submitted && retrospectiveForm.controls.name.errors }"/>
                 
-                <div *ngIf="submitted && retrospectiveForm.controls.name.errors">
-                    <div *ngIf="retrospectiveForm.controls.name.errors[0].required">Name is required</div>
-                </div>
+                <span class="text-danger" *ngIf="!retrospectiveForm?.controls?.name?.valid && retrospectiveForm?.controls?.name?.touched">Name is required</span>
+
+                <!-- <div *ngIf="submitted && retrospectiveForm.controls.name.errors">
+                    <div *ngIf="retrospectiveForm?.controls?.name?.errors?.required">Name is required</div>
+                </div> -->
             </div>
             <div class="mb-3">
                 <label  class="form-label" for="name">Summary: </label>   
                     <input class="form-control" type="text" formControlName="summary" 
                      [ngClass]="{ 'is-invalid': submitted && retrospectiveForm.controls.summary.errors }"/>
-                
-                <div *ngIf="submitted && retrospectiveForm.controls.summary.errors">
-                    <div *ngIf="retrospectiveForm.controls.summary.errors[0].required">Body is required</div>
-                </div>
             </div>
             
             <div class="mb-3">
                 <label  class="form-label" for="name">Date: </label>   
-                    <input class="form-control" type="date"  formControlName="date" 
+                    <input class="form-control" type="date"  formControlName="date"
                      [ngClass]="{ 'is-invalid': submitted && retrospectiveForm.controls.date.errors }"/>
-                
-                <div *ngIf="submitted && retrospectiveForm.controls.date.errors">
-                    <div *ngIf="retrospectiveForm.controls.date.errors[0].required">Date is required</div>
-                </div>
+                     <span class="text-danger" *ngIf="!retrospectiveForm?.controls?.date?.valid && retrospectiveForm?.controls?.date?.touched">Date is required</span>
             </div>
             <div class="mb-3">
-                <label  class="form-label" for="name">Participants: </label>   
+                <label  class="form-label" for="name">Participants: (comma seperated)</label>   
                     <input class="form-control" type="text" formControlName="participants" 
                      [ngClass]="{ 'is-invalid': submitted && retrospectiveForm.controls.participants.errors }"/>
                 
-                <div *ngIf="submitted && retrospectiveForm.controls.participants.errors">
-                    <div *ngIf="retrospectiveForm.controls.participants.errors[0].required">participant is required</div>
-                </div>
+                     <span class="text-danger" *ngIf="!retrospectiveForm?.controls?.participants?.valid && retrospectiveForm?.controls?.participants?.touched">Participant is required</span>
             </div>
             <div class="mb-3">
                 <input type="hidden"  formControlName="feedbacks" >
-            <button class="btn btn-success" type="submit">Submit</button>
+            <button class="btn btn-success" type="submit" [disabled]="!retrospectiveForm.valid">Submit</button>
             <div *ngIf="success" class="alert alert-success" role="alert">Retrospective added</div>
             <div *ngIf="failure" class="alert alert-danger" role="alert">{{errorMessage}}</div>
         </div>
