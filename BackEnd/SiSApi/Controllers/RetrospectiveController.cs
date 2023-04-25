@@ -31,8 +31,15 @@ namespace SiSApi.Controllers
 		[HttpGet("GetById/{id}")]
 		public async Task<Retrospective> GetById(Guid id)
 		{
-
-			return await _appRepository.GetById(id);
+			try
+			{
+				return await _appRepository.GetById(id);
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex.Message, ex.StackTrace);
+				throw;
+			}
 		}
 
 		// GET api/<RetrospectiveController>/2023-04-20

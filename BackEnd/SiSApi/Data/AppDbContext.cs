@@ -26,11 +26,11 @@ namespace SiSApi.Data
 								 v => v.Split(',', StringSplitOptions.RemoveEmptyEntries)
 								);
 
-			//modelBuilder.Entity<Retrospective>()
-			//.HasMany(r => r.Feedbacks)
-			////.WithOne(f => f.Retrospective)
-			////.HasForeignKey(fk=>fk.RetrospectiveId)
-			////.HasPrincipalKey(pk=>pk.Id);
+			modelBuilder.Entity<Retrospective>()
+			.HasMany(r => r.Feedbacks)
+			.WithOne(f => f.Retrospective)
+			.HasForeignKey(fk => fk.RetrospectiveId)
+			.HasPrincipalKey(pk => pk.Id);
 
 
 			//modelBuilder.Entity<Retrospective>().HasData(

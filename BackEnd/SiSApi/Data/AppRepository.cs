@@ -22,7 +22,7 @@ namespace SiSApi.Data
 		}
 		public async Task<List<Retrospective>> GetByDate(string date)
 		{
-				DateTime.TryParse(date, out DateTime dateChosen);
+			DateTime.TryParse(date, out DateTime dateChosen);
 			return await _context.Retrospectives
 				.AsNoTracking()
 				.Where(r => r.Date.Date == dateChosen.Date)
@@ -40,9 +40,9 @@ namespace SiSApi.Data
 		{
 			try
 			{
-				var item = await _context.Retrospectives.FirstOrDefaultAsync(r => r.Id == model.Id);
-				_context.Entry(item).State = EntityState.Modified;
-				item = model;
+				var retro = await _context.Retrospectives.FindAsync(model.Id);
+				_context.Entry(retro).State = EntityState.Modified;
+				retro = model;
 				await _context.SaveChangesAsync();
 
 			}
@@ -72,6 +72,10 @@ namespace SiSApi.Data
 		{
 			try
 			{
+				var retro = await _context.Retrospectives.FirstOrDefaultAsync(r => r.Name == model.Name);
+				if (retro == null)
+					return false;
+
 				await _context.Retrospectives.AddAsync(model);
 				await _context.SaveChangesAsync();
 
@@ -99,18 +103,16 @@ namespace SiSApi.Data
 		{
 			try
 			{
-				var repo = await _context.Retrospectives.AsNoTracking().FirstOrDefaultAsync(r => r.Id == guid); 
-				repo.Feedbacks.Add(
-				new Feedback()
+				var restro = await _context.Retrospectives.FindAsync(guid);
+				if (restro == null)
 				{
-					RetrospectiveId = guid,
-					Body = model.Body,
-					FeedbackType = model.FeedbackType,
-					Name = model.Name
-				});
-				//_context.Entry(repo).State = EntityState.Modified;
+					throw new Exception();
+				}
+
+				model.Retrospective = restro;
+				model.RetrospectiveId = guid;
+				_context.Feedbacks.Add( model );
 				await _context.SaveChangesAsync();
-				 repo = await _context.Retrospectives.AsNoTracking().FirstOrDefaultAsync(r => r.Id == guid);
 			}
 			catch (DbUpdateConcurrencyException)
 			{
