@@ -1,0 +1,48 @@
+<app-nav-menu title="Retrospectives"></app-nav-menu>
+<hr>
+
+<p>This component demonstrates fetching retrospectives data from the API.</p>
+
+<button class="btn btn-primary" type="button" [routerLink]="['/add-retrospective']">Add New</button>
+<p *ngIf="!retrospectives"><em>Loading...</em></p>
+
+<div class="mb-3" *ngIf="retrospectives.length > 0">
+
+  <div class="row ">
+
+    <div class="col">
+
+      <label class="form-label" for="name">Filter By date:</label>
+    </div>
+    <div class="col">
+      <input class="form-control" type="date" #filterDate>
+    </div>
+    <div class="col">
+      <button class="btn btn-success  btn-sm" type="button" (click)="getFilteredList(filterDate.value)">Search</button>
+      &nbsp;
+    </div>
+    <div class="col">
+      <button class="btn btn-secondary  btn-sm" type="button" (click)="getList()">Clear filter</button>
+    </div>
+  </div>
+</div>
+  <table class='table table-striped' aria-labelledby="tableLabel" *ngIf="retrospectives.length > 0">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Name</th>
+        <th>Summary</th>
+        <th>Participants</th>
+        <th>Feedbacks</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let retrospective of retrospectives">
+        <td>{{ retrospective.date| date }}</td>
+        <td>{{ retrospective.name }}</td>
+        <td>{{ retrospective.summary }}</td>
+        <td>{{ retrospective.participants }}</td>
+        <td><a routerLink="/retrospective/{{retrospective.id}}">View</a></td>
+      </tr>
+    </tbody>
+  </table>

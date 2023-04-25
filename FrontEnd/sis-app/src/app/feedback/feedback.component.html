@@ -1,0 +1,60 @@
+<app-nav-menu title="{{retrospective.name}} Feedback"></app-nav-menu> 
+<p>Date: {{retrospective.date | date}}</p>
+<p>Summary: {{retrospective.summary}}</p>
+<p>Participants: {{retrospective.participants}}</p>
+
+<h4>Retrospective Feedbacks</h4>
+<p *ngIf="!retrospective.feedbacks">
+	<ngb-alert [dismissible]="true">
+		<strong>Warning!</strong> No feedbacks found !!!
+	</ngb-alert>
+</p>
+<h5>New Feedback</h5>
+<div class="card">
+    <div class="card-body" id="cartBody">
+        <form [formGroup]="feedbackForm" (ngSubmit)="addFeedback()">
+            <div class="mb-3">
+                <label  class="form-label" for="name">Name:</label>
+                <input class="form-control"  type="text" formControlName="name" 
+                     [ngClass]="{ 'is-invalid': submitted && feedbackForm.controls.name.errors }"/>
+                
+                <div *ngIf="submitted && feedbackForm.controls.name.errors">
+                    <div *ngIf="feedbackForm.controls.name.errors[0].required">name is required</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label  class="form-label" for="name">Body: </label>   
+                    <input class="form-control" type="text" formControlName="body" 
+                     [ngClass]="{ 'is-invalid': submitted && feedbackForm.controls.body.errors }"/>
+                
+                <div *ngIf="submitted && feedbackForm.controls.body.errors">
+                    <div *ngIf="feedbackForm.controls.body.errors[0].required">body is required</div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label  class="form-label" for="feedbackType">Type: </label>   
+                    <select class="form-control"   formControlName="feedbackType"  id="feedbackType" name="feedbackType">
+                        <option value="Positive">Positive</option>
+                        <option value="Negative">Negative</option>
+                        <option value="Idea">Idea</option>
+                        <option value="Praise">Praise</option>
+                      </select> 
+                <div *ngIf="submitted && feedbackForm.controls.feedbackType.errors">
+                    <div *ngIf="feedbackForm.controls.feedbackType.errors[0].required">Type is required</div>
+                </div>
+            </div>
+            <div class="mb-3">
+            <button class="btn btn-success" type="submit">Submit</button>
+            <div *ngIf="success" class="alert alert-success" role="alert">Feedback added</div>
+            <div *ngIf="failure" class="alert alert-danger" role="alert">{{errorMessage}}</div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<div *ngFor="let feedback of retrospective.feedbacks">
+    <p>{{feedback.name}}</p>
+    <p>{{feedback.body}}</p>
+    <p>{{feedback.feedbackType}}</p>
+
+</div>
