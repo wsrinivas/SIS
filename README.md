@@ -11,4 +11,6 @@ Back end is a .net app so first this needs to run and it should run at https://l
 
 
 Front end: 
-This project can be run using ng serve -o and should open the app at port http://localhost:4200/
+
+You may want to update the node packages by running `npm install`
+This project can be run using `ng serve -o` and should open the app at port http://localhost:4200/
